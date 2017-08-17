@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!--viewport-->
+    <meta name="viewport" content="
+      width=device-width,
+      initial-scale=1.0,
+      minimum-scale=0.8,
+      maximum-scale=2.0,
+      user-scalable=no
+    ">
+
+    <link rel="stylesheet" href="/css/Login.css">
+    <link rel="stylesheet" href="/css/Login_rwd.css">
+</head>
+<body>
+    <div class="body_wrap">
+        <div class="login_logo_wrap">
+            <div class="login_logo">
+            </div>
+        </div>
+
+        <div class="login_box">
+            <div class="login_container">
+                <form method="post" accept-charset="UTF-8">
+                    {{ getCsrfInput() }}
+                    <input type="hidden" name="action" value="users/sendPasswordResetEmail">
+                    <input type="hidden" name="redirect" value="">
+                    <div class="login_account">
+                        <h1><label for="loginName">請輸入帳戶名稱或信箱</label></h1>
+                        <div class="input_wrap">
+                            <input id="loginName" type="text" name="loginName" value="{% if loginName is defined %}{{ loginName }}{% else %}{{ craft.session.rememberedUsername }}{% endif %}"></br>
+                        </div>
+                    </div>
+                    {% if errors is defined %}
+                    <ul class="errors">
+                        {% for error in errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <div class="rememberme">
+                        <input class="login button" type="submit" value="送出">
+                    </div>
+                   
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

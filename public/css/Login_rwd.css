@@ -1,0 +1,67 @@
+/*Login page_RWD ( width < 450px )*/
+
+@media only screen and (max-width: 450px) {
+            /*Login page*/
+
+            .login_box {
+                width: 300px;
+                height: 320px;
+            }
+
+            .login_container {
+                padding: 1em 1em;
+            }
+
+            .login_account h1{
+                font-size: 16px;
+            }
+
+            .login_account .input_wrap {
+                width: 258px;
+                height: 32px;
+            }
+
+            .login_account input {
+                width: 240px;
+                height: 30px;
+            }
+
+            .rememberme {
+                font-size: 16px;
+            }
+
+            .rememberme input {
+                margin: 5px;
+            }
+
+            /*登入按鈕*/
+
+            .rememberme input.button {
+                margin-top: 0em;
+            }
+
+            .rememberme input.login { 
+                border: #313e4d;
+                margin-left: 0.5em;
+            }
+
+            .rememberme input.cancel { 
+                border: #cfcfcf 3px solid;
+                margin-left: 0.1em;
+            }
+
+
+            /*忘記密碼*/
+
+            .login_forget {
+                font-size: 16px;
+            }
+}
+
+/*tab檢查框*/
+/*
+:focus
+{
+ outline:#43B5FC solid thin;
+}
+*/

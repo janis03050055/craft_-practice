@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\craft",
+    "\\craft\\app",
+    "\\craft\\app\\controllers",
+    "\\craft\\app\\templates",
+    "\\craft\\app\\templates\\dashboard",
+    "\\craft\\app\\templates\\entries",
+    "\\craft\\plugins",
+    "\\craft\\templates",
+    "\\craft\\templates\\register"
+  ],
+  "SelectedNode": "\\craft\\templates\\_layout.html",
+  "PreviewInSolutionExplorer": false
+}

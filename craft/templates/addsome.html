@@ -1,0 +1,122 @@
+{% extends "_layout" %}
+
+{% block extraCSS %}
+  <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
+  <link href="/popSelect/dist/jquery.popSelect.css" type="text/css" rel="stylesheet" />
+  <link href="/css/addNews.css" type="text/css" rel="stylesheet">
+
+  <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+  {#<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>#}
+  <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>
+  <script src="/popSelect/dist/jquery.popSelect.min.js"></script>
+{% endblock %}
+
+{% block content %}
+   <div class="container_wrap">
+      <div class="container news_container">
+        <div class="News_title">
+          <h1>發布消息</h1>
+        </div>
+        <!--表單填表-->
+        {% if announceform is defined and announceform.getErrors() | length %}
+          {% for errors in announceform.getErrors() %}
+            <ul class="errors">
+              {% for error in errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        {% endif %}
+        <div class="form_wrap">
+          <form class="News_form" method="post" action="" accept-charset="UTF-8" enctype="multipart/form-data">
+            {{ getCsrfInput() }}
+            <input type="hidden" name="action" value="sproutForms/entries/saveEntry">
+            <input type="hidden" name="handle" value="announceform">
+            <input type="hidden" name="redirect" value="/announcements">
+  
+            <div class="left_form">
+              <label for="fields-announcetitle">標題<div class="star">*</div></label></br>
+              <input type="text" id="fields-announcetitle" class="announcetitle" name="fields[announcetitle]" style="width: 86%;" required /></br>
+              <label for="fields-announcebody">內文<div class="star">*</div></label>
+              <textarea style="width: 86%;" id="fields-announcebody" class="announcebody" name="fields[announcebody]" cols="" rows="8" required></textarea></br>
+              <input type="hidden" id="fields-announceauthorid" class="announceauthorid" name="fields[announceauthorid]" value="{{currentUser.id}}">
+              <label for="fields-announceauthor">[上稿人員]</label>
+             
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             
+              <label for="fields-announceexpireddate">發布日期</label>
+              <input type="text" id="fields-announceexpireddate" class="announceexpireddate" name="fields[announceexpireddate]" value="{{'now'|date_modify('+1 month')|date('Y-m-d')}}" /></br>
+              
+              {{craft.sproutForms.displayField('announceform.viewdeparts')}}<br>
+            </div>
+
+            <div class="right_form">
+              <label for="fields-announcefiles">上傳公告附檔(最多6個檔案)</label>
+              <input type="hidden" id="fields-announcefiles" class="announcefiles" name="fields[announcefiles]" value="">              
+              <div class="YouFile" id="fileuploader">上傳公告附檔</div>
+            </div>
+            <div class="inputbutton">
+              <input class="button yes" type="submit" value="確定新增">
+              <input class="button cancel" type="reset" value="清除內容">
+            </div>
+          </form>
+       </div>
+   </div>
+{% endblock %}
+
+{% set initJs %}
+  $(document).ready(function() {
+    $("#fileuploader").uploadFile({
+        url:"uploadAnnounce.php",    //YOUR_FILE_UPLOAD_URL
+        multiple:true,
+        dragDrop:false,
+        maxFileCount:6,
+	      fileName:"myfile",
+        returnType: "json",
+        showDelete: true,
+        showDownload:false,
+        statusBarWidth:350,
+        deleteCallback: function (data, pd) {
+          for (var i = 0; i < data.length; i++) {
+            $.post("deleteAnnounce.php", {op: "delete",name: data[i]},
+
+            function (resp,textStatus, jqXHR) {
+                //Show Message	
+                alert("File Deleted");
+                var str =  "";
+                for (var i = 0; i < data.length; i++) {
+                   str =  str + data[i] + ";";
+                }
+                var str2 =  $("#fields-announcefiles").val();
+                str2 = str2.replace(str,"");
+                $("#fields-announcefiles").val(str2);
+            });
+          }
+          pd.statusbar.hide(); //You choice.
+
+        },
+        downloadCallback:function(filename,pd)
+	      {
+		      location.href="downloadAnnounce.php?filename="+filename;
+	      },
+        onSuccess:function(files,data,xhr,pd) {
+          //alert("onSuccess");
+          var str =  $("#fields-announcefiles").val();
+          for (var i = 0; i < data.length; i++) {
+            str =  str + data[i] + ";";
+          }
+          $("#fields-announcefiles").val(str);
+          //$("#fields-announcefiles").val(str.slice(0,-1));
+	      },
+        //uploadStr:"公告附檔上載"
+    });
+
+    $('#fields-viewdeparts').popSelect({
+        width: 620,
+        showTitle: false,
+    });
+  });
+{% endset %}
+
+{% includeJs initJs %}
+

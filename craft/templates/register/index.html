@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!--viewport-->
+    <meta name="viewport" content="
+      width=device-width,
+      initial-scale=1.0,
+      minimum-scale=0.8,
+      maximum-scale=2.0,
+      user-scalable=no
+    ">
+
+    <link rel="stylesheet" href="/css/Login.css">
+    <link rel="stylesheet" href="/css/Login_rwd.css">
+</head>
+<body>
+    <div class="body_wrap">
+        <div class="login_logo_wrap">
+            <div class="login_logo">
+            </div>
+        </div>
+
+        <div class="login_box">
+            <div class="login_container">
+                <form method="post" accept-charset="UTF-8">
+                    {{ getCsrfInput() }}
+                    <input type="hidden" name="action" value="users/saveUser">
+                    <input type="hidden" name="redirect" value="">
+                    {% macro errorList(errors) %}
+                        {% if errors %}
+                        <ul class="errors">
+                            {% for error in errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    {% endmacro %}
+
+                    {% from _self import errorList %}
+
+                    <div class="login_account">
+                        <h1><label for="username">帳號</label></h1>
+                        <div class="input_wrap">
+                            <input id="username" type="text" name="username"
+                                   {%- if account is defined %} value="{{ account.username }}" {% endif -%}>
+
+                            {% if account is defined %}
+                            {{ errorList(account.getErrors('username')) }}
+                            {% endif %}
+                        </div>
+                        <h1><label for="email">信箱</label></h1>
+                        <div class="input_wrap">
+                            <input id="email" type="text" name="email"
+                                   {%- if account is defined %} value="{{ account.email }}" {% endif -%}>
+                            {% if account is defined %}
+                            {{ errorList(account.getErrors('email')) }}
+                            {% endif %}
+                        </div>
+                        <h1><label for="password">密碼</label></h1>
+                        <div class="input_wrap">
+                            <input id="password" type="password" name="password">
+
+                            {% if account is defined %}
+                            {{ errorList(account.getErrors('password')) }}
+                            {% endif %}
+                        </div>
+                    </div>  
+                    <div class="rememberme">
+                        <input class="login button" type="submit" value="註冊">
+                    </div>
+                   
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
